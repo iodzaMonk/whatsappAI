@@ -1,0 +1,2 @@
+add_executable(worker_server main.cpp)
+target_link_libraries(worker_server PRIVATE whatsapp_core)
