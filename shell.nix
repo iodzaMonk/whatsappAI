@@ -11,6 +11,6 @@ pkgs.mkShell {
     cmake
     ninja
     pkg-config
-    gcc13
+    gcc14
   ];
 }
