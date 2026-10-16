@@ -1,10 +1,14 @@
 #include <drogon/drogon.h>
 #include <pqxx/pqxx>
+#include <whatsapp/db/connection_pool.hpp>
 
 int main()
 {
+    auto pool = std::make_shared<whatsapp::db::connection_pool>(
+        "postgresql://postgres:postgres@localhost:5432/whatsapp_ai_db"
+    );
     drogon::app().registerHandler("/health",
-         [](const drogon::HttpRequestPtr &req,
+         [pool](const drogon::HttpRequestPtr &req,
              std::function<void(const drogon::HttpResponsePtr &)> &&callback) {
 
         Json::Value json;
@@ -13,8 +17,8 @@ int main()
         drogon::HttpResponsePtr resp;       
         try
         {
-            pqxx::connection conn("postgresql://postgres:postgres@localhost:5432/whatsapp_ai_db");
-            pqxx::work txn(conn);
+            auto conn = pool->acquire();
+            pqxx::work txn(*conn);
             pqxx::result res = txn.exec("SELECT 1;");
             txn.commit();
             json["database"] = "connected";
