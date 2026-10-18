@@ -23,4 +23,7 @@ namespace whatsapp::db {
         connection_pool &operator=(const connection_pool &) = delete;
         std::shared_ptr<pqxx::connection> acquire();
     };
+    
+    void init_pool(const std::string &conn_str, size_t pool_size = 10);
+    std::shared_ptr<connection_pool> get_pool();
 }

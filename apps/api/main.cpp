@@ -4,9 +4,9 @@
 
 int main()
 {
-    auto pool = std::make_shared<whatsapp::db::connection_pool>(
-        "postgresql://postgres:postgres@localhost:5432/whatsapp_ai_db"
-    );
+    whatsapp::db::init_pool("postgresql://postgres:postgres@localhost:5432/whatsapp_ai_db");
+    auto pool = whatsapp::db::get_pool();
+
     drogon::app().registerHandler("/health",
          [pool](const drogon::HttpRequestPtr &req,
              std::function<void(const drogon::HttpResponsePtr &)> &&callback) {

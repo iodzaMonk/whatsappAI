@@ -34,4 +34,14 @@ namespace whatsapp::db {
         );
     }
 
+    static std::shared_ptr<connection_pool> g_pool = nullptr;
+
+    void init_pool(const std::string &conn_str, size_t pool_size) {
+        g_pool = std::make_shared<connection_pool>(conn_str);
+    }
+
+    std::shared_ptr<connection_pool> get_pool() {
+        return g_pool;
+    }
+
 }
